@@ -9,6 +9,7 @@ Siroria.varVersion 	= "1"
 
 Siroria.IDs 		= {
 	[109081] = true,	-- Perfect
+	[107095] = true,	-- Non-Perfect (?)
 }
 Siroria.downTime	= 0
 
