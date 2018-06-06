@@ -14,6 +14,7 @@ Siroria.IDs 		= {
 Siroria.downTime	= 0
 
 Siroria.UPDATE_INTERVAL	= 100
+Siroria.STACK_INTERVAL	= 500
 
 Siroria.COLORS = {
 	["UP"] = {
@@ -44,9 +45,22 @@ function Siroria.savePos()
 	Siroria.savedVars.offsetY = SiroriaFrame:GetTop()
 end
 
+function Siroria.combatState()
+	Siroria.hideOutOfCombat()
+	Siroria.stackHandler()
+end
+
 function Siroria.hideOutOfCombat()
 	if Siroria.savedVars.passiveHide then 
 		SiroriaFrame:SetHidden(not IsUnitInCombat("player"))
+	end
+end
+
+function Siroria.stackHandler()
+	if IsUnitInCombat("player") and Siroria.savedVars.showStacks then
+		EM:RegisterForUpdate(Siroria.name.."GetStacks", Siroria.STACK_INTERVAL, Siroria.getStacks)
+	else
+		EM:UnregisterForUpdate(Siroria.name.."GetStacks")
 	end
 end
 
@@ -82,6 +96,18 @@ function Siroria.combatEvent(_, _, _, _, _, _, sourceName, _, _, _, _, _, _, _, 
 	end
 end
 
+function Siroria.getStacks()
+	local numBuffs = GetNumBuffs("player")
+	for i = 1, numBuffs+1 do
+		if i > numBuffs then break end
+		local _,_,_,_,stackCount,_,_,_,_,_,abilityID = GetUnitBuffInfo("player", i)
+		if abilityID == 110142 then
+			d("Current stacks for " .. GetAbilityName(abilityID) .. ": " .. stackCount)
+			break
+		end
+	end
+end
+
 function Siroria.Init(event, addon)
 	if addon ~= Siroria.name then return end
 	EM:UnregisterForEvent(Siroria.name.."Load", EVENT_ADD_ON_LOADED)
@@ -97,7 +123,7 @@ function Siroria.Init(event, addon)
 	Siroria.hideOutOfCombat()
 
 	EM:RegisterForEvent(Siroria.name.."Hide", EVENT_RETICLE_HIDDEN_UPDATE, Siroria.hideFrame)
-	EM:RegisterForEvent(Siroria.name.."PassiveHide", EVENT_PLAYER_COMBAT_STATE, Siroria.hideOutOfCombat)
+	EM:RegisterForEvent(Siroria.name.."CombatState", EVENT_PLAYER_COMBAT_STATE, Siroria.combatState)
 
 	EM:RegisterForEvent(Siroria.name.."ECE", EVENT_COMBAT_EVENT, Siroria.combatEvent)
 	EM:AddFilterForEvent(Siroria.name.."ECE", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_EFFECT_GAINED)

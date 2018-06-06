@@ -48,7 +48,7 @@ function Siroria.setupMenu()
 			name = "Text Size",
 			tooltip = "Size of the displayed timer",
 			min = 20,
-			max = 100,
+			max = 72,
 			getFunc = function() return Siroria.savedVars.timerSize end,
 			setFunc = function(value)
 				Siroria.savedVars.timerSize = value
