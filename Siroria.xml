@@ -9,18 +9,14 @@
 			</OnMoveStop>
 
 			<Controls>
-				<Backdrop name="$(parent)BG" centerColor="55000000" edgeColor="AA000000">
-					<AnchorFill />
-					<Edge edgeSize="2" />
-				</Backdrop>
 				<Label name="$(parent)Time" text="0.0" color="00FF00" inheritAlpha="true" font="$(CHAT_FONT)|$(KB_48)|soft-shadow-thick" verticalAlignment="TOP" horizontalAlignment="RIGHT" >
 					<AnchorFill />
 				</Label>
 				<Label name="$(parent)Stacks" text="0" color="FFAA00" inheritAlpha="true" font="$(CHAT_FONT)|$(KB_24)|soft-shadow-thick" verticalAlignment="TOP" horizontalAlignment="LEFT" >
-					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)Time" offsetX="10" />
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)Time" offsetX="10" offsetY="5" />
 				</Label>
-				<Label name="$(parent)StackTime" text="100" color="00FF00" inheritAlpha="true" font="$(CHAT_FONT)|$(KB_24)|soft-shadow-thick" verticalAlignment="TOP" horizontalAlignment="LEFT" >
-					<Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" relativeTo="$(parent)Time" offsetX="10" />
+				<Label name="$(parent)StackTime" text="0" color="00FF00" inheritAlpha="true" font="$(CHAT_FONT)|$(KB_24)|soft-shadow-thick" verticalAlignment="TOP" horizontalAlignment="LEFT" >
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$(parent)Stacks" offsetY="-5" />
 				</Label>
 			</Controls>
 		</TopLevelControl>
