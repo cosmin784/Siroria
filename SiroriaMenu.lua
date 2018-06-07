@@ -43,18 +43,18 @@ function Siroria.setupMenu()
 			type = "header",
 			name = "Options"
 		},
-		{
-			type = "slider",
-			name = "Text Size",
-			tooltip = "Size of the displayed timer",
-			min = 20,
-			max = 72,
-			getFunc = function() return Siroria.savedVars.timerSize end,
-			setFunc = function(value)
-				Siroria.savedVars.timerSize = value
-				Siroria.setFontSize(value)
-			end
-		},
+		-- {
+		-- 	type = "slider",
+		-- 	name = "Text Size",
+		-- 	tooltip = "Size of the displayed timer",
+		-- 	min = 20,
+		-- 	max = 72,
+		-- 	getFunc = function() return Siroria.savedVars.timerSize end,
+		-- 	setFunc = function(value)
+		-- 		Siroria.savedVars.timerSize = value
+		-- 		Siroria.setFontSize(value)
+		-- 	end
+		-- },
 		{
 			type = "checkbox",
 			name = "Only Display In Combat",

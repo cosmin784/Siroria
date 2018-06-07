@@ -9,12 +9,15 @@ Siroria.varVersion 	= "1"
 
 Siroria.IDs 		= {
 	[109081] = true,	-- Perfect
-	[107095] = true,	-- Non-Perfect (?)
+	[107095] = true,	-- Non-Perfect
+}
+Siroria.boonIDs		= {
+	[110142] = true,	-- Perfect
+	[110118] = true,	-- Non-Perfect
 }
 Siroria.downTime	= 0
 
 Siroria.UPDATE_INTERVAL	= 100
-Siroria.STACK_INTERVAL	= 500
 
 Siroria.COLORS = {
 	["UP"] = {
@@ -58,9 +61,11 @@ end
 
 function Siroria.stackHandler()
 	if IsUnitInCombat("player") and Siroria.savedVars.showStacks then
-		EM:RegisterForUpdate(Siroria.name.."GetStacks", Siroria.STACK_INTERVAL, Siroria.getStacks)
+		EM:RegisterForUpdate(Siroria.name.."GetStacks", Siroria.UPDATE_INTERVAL, Siroria.getStacks)
 	else
 		EM:UnregisterForUpdate(Siroria.name.."GetStacks")
+		SiroriaFrameStacks:SetText("0")
+		SiroriaFrameStackTime:SetText("0.0")
 	end
 end
 
@@ -99,10 +104,14 @@ end
 function Siroria.getStacks()
 	local numBuffs = GetNumBuffs("player")
 	for i = 1, numBuffs+1 do
-		if i > numBuffs then break end
-		local _,_,_,_,stackCount,_,_,_,_,_,abilityID = GetUnitBuffInfo("player", i)
-		if abilityID == 110142 then
-			d("Current stacks for " .. GetAbilityName(abilityID) .. ": " .. stackCount)
+		local _,_,timeEnding,_,stackCount,_,_,_,_,_,abilityID = GetUnitBuffInfo("player", i)
+		if Siroria.boonIDs[abilityID] then
+			SiroriaFrameStacks:SetText(stackCount)
+			SiroriaFrameStackTime:SetText(string.format("%.1f", Siroria.time(timeEnding)))
+			break
+		elseif i > numBuffs then
+			SiroriaFrameStacks:SetText("0")
+			SiroriaFrameStackTime:SetText("0.0")
 			break
 		end
 	end
