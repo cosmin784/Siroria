@@ -4,7 +4,7 @@ local Siroria = Siroria
 local EM		= GetEventManager()
 
 Siroria.name		= "Siroria"
-Siroria.version		= "1.0.0"
+Siroria.version		= "1.0.1"
 Siroria.varVersion 	= "1"
 
 Siroria.IDs 		= {
