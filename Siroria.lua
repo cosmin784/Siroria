@@ -9,7 +9,11 @@ Siroria.varVersion 	= "1"
 
 Siroria.IDs 		= {
 	[109081] = true,	-- Perfect
-	[107095] = true,	-- Non-Perfect (?)
+	[107095] = true,	-- Non-Perfect
+}
+Siroria.boonIDs		= {
+	[110142] = true,	-- Perfect
+	[110118] = true,	-- Non-Perfect
 }
 Siroria.downTime	= 0
 
@@ -44,9 +48,24 @@ function Siroria.savePos()
 	Siroria.savedVars.offsetY = SiroriaFrame:GetTop()
 end
 
+function Siroria.combatState()
+	Siroria.hideOutOfCombat()
+	Siroria.stackHandler()
+end
+
 function Siroria.hideOutOfCombat()
 	if Siroria.savedVars.passiveHide then 
 		SiroriaFrame:SetHidden(not IsUnitInCombat("player"))
+	end
+end
+
+function Siroria.stackHandler()
+	if IsUnitInCombat("player") and Siroria.savedVars.showStacks then
+		EM:RegisterForUpdate(Siroria.name.."GetStacks", Siroria.UPDATE_INTERVAL, Siroria.getStacks)
+	else
+		EM:UnregisterForUpdate(Siroria.name.."GetStacks")
+		SiroriaFrameStacks:SetText("0")
+		SiroriaFrameStackTime:SetText("0.0")
 	end
 end
 
@@ -82,6 +101,22 @@ function Siroria.combatEvent(_, _, _, _, _, _, sourceName, _, _, _, _, _, _, _, 
 	end
 end
 
+function Siroria.getStacks()
+	local numBuffs = GetNumBuffs("player")
+	for i = 1, numBuffs+1 do
+		local _,_,timeEnding,_,stackCount,_,_,_,_,_,abilityID = GetUnitBuffInfo("player", i)
+		if Siroria.boonIDs[abilityID] then
+			SiroriaFrameStacks:SetText(stackCount)
+			SiroriaFrameStackTime:SetText(string.format("%.1f", Siroria.time(timeEnding)))
+			break
+		elseif i > numBuffs then
+			SiroriaFrameStacks:SetText("0")
+			SiroriaFrameStackTime:SetText("0.0")
+			break
+		end
+	end
+end
+
 function Siroria.Init(event, addon)
 	if addon ~= Siroria.name then return end
 	EM:UnregisterForEvent(Siroria.name.."Load", EVENT_ADD_ON_LOADED)
@@ -97,7 +132,7 @@ function Siroria.Init(event, addon)
 	Siroria.hideOutOfCombat()
 
 	EM:RegisterForEvent(Siroria.name.."Hide", EVENT_RETICLE_HIDDEN_UPDATE, Siroria.hideFrame)
-	EM:RegisterForEvent(Siroria.name.."PassiveHide", EVENT_PLAYER_COMBAT_STATE, Siroria.hideOutOfCombat)
+	EM:RegisterForEvent(Siroria.name.."CombatState", EVENT_PLAYER_COMBAT_STATE, Siroria.combatState)
 
 	EM:RegisterForEvent(Siroria.name.."ECE", EVENT_COMBAT_EVENT, Siroria.combatEvent)
 	EM:AddFilterForEvent(Siroria.name.."ECE", EVENT_COMBAT_EVENT, REGISTER_FILTER_COMBAT_RESULT, ACTION_RESULT_EFFECT_GAINED)

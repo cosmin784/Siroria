@@ -12,6 +12,12 @@
 				<Label name="$(parent)Time" text="0.0" color="00FF00" inheritAlpha="true" font="$(CHAT_FONT)|$(KB_48)|soft-shadow-thick" verticalAlignment="TOP" horizontalAlignment="RIGHT" >
 					<AnchorFill />
 				</Label>
+				<Label name="$(parent)Stacks" text="0" color="FFAA00" inheritAlpha="true" font="$(CHAT_FONT)|$(KB_36)|soft-shadow-thick" verticalAlignment="TOP" horizontalAlignment="LEFT" >
+					<Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$(parent)Time" offsetX="10" offsetY="-10" />
+				</Label>
+				<Label name="$(parent)StackTime" text="0.0" color="00FFFF" inheritAlpha="true" font="$(CHAT_FONT)|$(KB_36)|soft-shadow-thick" verticalAlignment="TOP" horizontalAlignment="LEFT" >
+					<Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeTo="$(parent)Stacks" offsetY="-10" />
+				</Label>
 			</Controls>
 		</TopLevelControl>
 	</Controls>
