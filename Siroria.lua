@@ -34,13 +34,14 @@ Siroria.COLORS = {
 	},
 }
 
-Siroria.defaults	= {
-	["offsetX"]	= 500,
-	["offsetY"]	= 500,
-	["timerSize"]	= 48,
-	["passiveHide"]	= false,
-	["COLORS"]	= Siroria.COLORS,
-	["showStacks"]	= true,
+Siroria.defaults		= {
+	["offsetX"]		= 500,
+	["offsetY"]		= 500,
+	["timerSize"]		= 48,
+	["passiveHide"]		= false,
+	["COLORS"]		= Siroria.COLORS,
+	["showStacks"]		= true,
+	["showStackTimer"]	= true,
 }
 
 function Siroria.setPos()
@@ -66,7 +67,7 @@ function Siroria.hideOutOfCombat()
 end
 
 function Siroria.stackHandler()
-	if IsUnitInCombat("player") and Siroria.savedVars.showStacks then
+	if IsUnitInCombat("player") and (Siroria.savedVars.showStacks or Siroria.savedVars.showStackTimer) then
 		EM:RegisterForUpdate(Siroria.name.."GetStacks", Siroria.UPDATE_INTERVAL, Siroria.getStacks)
 	else
 		EM:UnregisterForUpdate(Siroria.name.."GetStacks")
@@ -138,7 +139,8 @@ function Siroria.Init(event, addon)
 	Siroria.setFontSize(Siroria.savedVars.timerSize)
 	Siroria.setPos()
 	SiroriaFrame:SetHidden(IsReticleHidden())
-	-- SiroriaFrameTime:SetColor(unpack(Siroria.savedVars.COLORS.UP))
+	SiroriaFrameStacks:SetHidden(not Siroria.savedVars.showStacks)
+	SiroriaFrameStackTime:SetHidden(not Siroria.savedVars.showStackTimer)
 	Siroria.setColors()
 
 	Siroria.setupMenu()

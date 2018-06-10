@@ -10,7 +10,7 @@ function Siroria.setupMenu()
 		displayName = "|cff5938S|riroria",
 		author = "Wheels",
 		version = ""..Siroria.version,
-		registerForRefresh = true
+		--registerForRefresh = true
 	}
 
 	LAM:RegisterAddonPanel(Siroria.name.."Options", panelData)
@@ -63,6 +63,26 @@ function Siroria.setupMenu()
 			setFunc = function(value)
 				Siroria.savedVars.passiveHide = value
 				Siroria.hideOutOfCombat()
+			end
+		},
+		{
+			type = "checkbox",
+			name = "Display Stack Count",
+			tooltip = "Option to enable/disable counter showing current stacks",
+			getFunc = function() return Siroria.savedVars.showStacks end,
+			setFunc = function(value)
+				Siroria.savedVars.showStacks = value
+				SiroriaFrameStacks:SetHidden(not value)
+			end
+		},
+		{
+			type = "checkbox",
+			name = "Display Stack Timer",
+			tooltip = "Option to enable/disable timer for remaining time on stacks",
+			getFunc = function() return Siroria.savedVars.showStackTimer end,
+			setFunc = function(value)
+				Siroria.savedVars.showStackTimer = value
+				SiroriaFrameStackTime:SetHidden(not value)
 			end
 		},
 		{
