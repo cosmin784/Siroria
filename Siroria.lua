@@ -25,7 +25,13 @@ Siroria.COLORS = {
 	},
 	["DOWN"] = {
 		1, 0, 0,
-	}
+	},
+	["STACK"] = {
+		1, 0.66, 0,
+	},
+	["STACKTIMER"] = {
+		0, 1, 1,
+	},
 }
 
 Siroria.defaults	= {
@@ -117,6 +123,12 @@ function Siroria.getStacks()
 	end
 end
 
+function Siroria.setColors()
+	SiroriaFrameTime:SetColor(unpack(Siroria.savedVars.COLORS.UP))
+	SiroriaFrameStacks:SetColor(unpack(Siroria.savedVars.COLORS.STACK))
+	SiroriaFrameStackTime:SetColor(unpack(Siroria.savedVars.COLORS.STACKTIMER))
+end
+
 function Siroria.Init(event, addon)
 	if addon ~= Siroria.name then return end
 	EM:UnregisterForEvent(Siroria.name.."Load", EVENT_ADD_ON_LOADED)
@@ -126,7 +138,8 @@ function Siroria.Init(event, addon)
 	Siroria.setFontSize(Siroria.savedVars.timerSize)
 	Siroria.setPos()
 	SiroriaFrame:SetHidden(IsReticleHidden())
-	SiroriaFrameTime:SetColor(unpack(Siroria.savedVars.COLORS.UP))
+	-- SiroriaFrameTime:SetColor(unpack(Siroria.savedVars.COLORS.UP))
+	Siroria.setColors()
 
 	Siroria.setupMenu()
 	Siroria.hideOutOfCombat()
