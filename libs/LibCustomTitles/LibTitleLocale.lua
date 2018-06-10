@@ -210,6 +210,7 @@ local LocaleTitles =
 		[2] = 
 		{
 			[2043] = "Undaunted",
+			[2136] = "Bringer of Light",
 			[1538] = "Hist-Shadow",
 			[1159] = "Deadlands Adept",
 			[1546] = "Sun's Dusk Reaper",
