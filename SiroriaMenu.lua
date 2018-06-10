@@ -10,7 +10,7 @@ function Siroria.setupMenu()
 		displayName = "|cff5938S|riroria",
 		author = "Wheels",
 		version = ""..Siroria.version,
-		registerForRefresh = true
+		--registerForRefresh = true
 	}
 
 	LAM:RegisterAddonPanel(Siroria.name.."Options", panelData)
@@ -66,20 +66,61 @@ function Siroria.setupMenu()
 			end
 		},
 		{
+			type = "checkbox",
+			name = "Display Stack Count",
+			tooltip = "Option to enable/disable counter showing current stacks",
+			getFunc = function() return Siroria.savedVars.showStacks end,
+			setFunc = function(value)
+				Siroria.savedVars.showStacks = value
+				SiroriaFrameStacks:SetHidden(not value)
+			end
+		},
+		{
+			type = "checkbox",
+			name = "Display Stack Timer",
+			tooltip = "Option to enable/disable timer for remaining time on stacks",
+			getFunc = function() return Siroria.savedVars.showStackTimer end,
+			setFunc = function(value)
+				Siroria.savedVars.showStackTimer = value
+				SiroriaFrameStackTime:SetHidden(not value)
+			end
+		},
+		{
 			type = "colorpicker",
 			name = "Available Color",
 			tooltip = "Color of timer when Siroria proc is available",
-			warning = "Color changes go into effect next time timer changes color",
 			getFunc = function() return unpack(Siroria.savedVars.COLORS.UP) end,
-			setFunc = function(r,g,b,a) Siroria.savedVars.COLORS.UP = {r,g,b,a} end,
+			setFunc = function(r,g,b,a)
+				Siroria.savedVars.COLORS.UP = {r,g,b,a}
+				Siroria.setColors()
+			end,
 		},
 		{
 			type = "colorpicker",
 			name = "Cooldown Color",
 			tooltip = "Color of timer when Siroria proc is currently on cooldown",
-			warning = "Color changes go into effect next time timer changes color",
 			getFunc = function() return unpack(Siroria.savedVars.COLORS.DOWN) end,
 			setFunc = function(r,g,b,a) Siroria.savedVars.COLORS.DOWN = {r,g,b,a} end,
+		},
+		{
+			type = "colorpicker",
+			name = "Stack Color",
+			tooltip = "Color of stack counter",
+			getFunc = function() return unpack(Siroria.savedVars.COLORS.STACK) end,
+			setFunc = function(r,g,b,a)
+				Siroria.savedVars.COLORS.STACK = {r,g,b,a}
+				Siroria.setColors()
+			end,
+		},
+		{
+			type = "colorpicker",
+			name = "Stack Timer Color",
+			tooltip = "Color of timer tracking remaining time on stacks",
+			getFunc = function() return unpack(Siroria.savedVars.COLORS.STACKTIMER) end,
+			setFunc = function(r,g,b,a)
+				Siroria.savedVars.COLORS.STACKTIMER = {r,g,b,a}
+				Siroria.setColors()
+			end,
 		},
 	}
 

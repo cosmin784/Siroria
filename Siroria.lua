@@ -4,7 +4,7 @@ local Siroria = Siroria
 local EM		= GetEventManager()
 
 Siroria.name		= "Siroria"
-Siroria.version		= "1.0.1"
+Siroria.version		= "1.1.1"
 Siroria.varVersion 	= "1"
 
 Siroria.IDs 		= {
@@ -25,16 +25,23 @@ Siroria.COLORS = {
 	},
 	["DOWN"] = {
 		1, 0, 0,
-	}
+	},
+	["STACK"] = {
+		1, 0.66, 0,
+	},
+	["STACKTIMER"] = {
+		0, 1, 1,
+	},
 }
 
-Siroria.defaults	= {
-	["offsetX"]	= 500,
-	["offsetY"]	= 500,
-	["timerSize"]	= 48,
-	["passiveHide"]	= false,
-	["COLORS"]	= Siroria.COLORS,
-	["showStacks"]	= true,
+Siroria.defaults		= {
+	["offsetX"]		= 500,
+	["offsetY"]		= 500,
+	["timerSize"]		= 48,
+	["passiveHide"]		= false,
+	["COLORS"]		= Siroria.COLORS,
+	["showStacks"]		= true,
+	["showStackTimer"]	= true,
 }
 
 function Siroria.setPos()
@@ -60,7 +67,7 @@ function Siroria.hideOutOfCombat()
 end
 
 function Siroria.stackHandler()
-	if IsUnitInCombat("player") and Siroria.savedVars.showStacks then
+	if IsUnitInCombat("player") and (Siroria.savedVars.showStacks or Siroria.savedVars.showStackTimer) then
 		EM:RegisterForUpdate(Siroria.name.."GetStacks", Siroria.UPDATE_INTERVAL, Siroria.getStacks)
 	else
 		EM:UnregisterForUpdate(Siroria.name.."GetStacks")
@@ -117,6 +124,12 @@ function Siroria.getStacks()
 	end
 end
 
+function Siroria.setColors()
+	SiroriaFrameTime:SetColor(unpack(Siroria.savedVars.COLORS.UP))
+	SiroriaFrameStacks:SetColor(unpack(Siroria.savedVars.COLORS.STACK))
+	SiroriaFrameStackTime:SetColor(unpack(Siroria.savedVars.COLORS.STACKTIMER))
+end
+
 function Siroria.Init(event, addon)
 	if addon ~= Siroria.name then return end
 	EM:UnregisterForEvent(Siroria.name.."Load", EVENT_ADD_ON_LOADED)
@@ -126,7 +139,9 @@ function Siroria.Init(event, addon)
 	Siroria.setFontSize(Siroria.savedVars.timerSize)
 	Siroria.setPos()
 	SiroriaFrame:SetHidden(IsReticleHidden())
-	SiroriaFrameTime:SetColor(unpack(Siroria.savedVars.COLORS.UP))
+	SiroriaFrameStacks:SetHidden(not Siroria.savedVars.showStacks)
+	SiroriaFrameStackTime:SetHidden(not Siroria.savedVars.showStackTimer)
+	Siroria.setColors()
 
 	Siroria.setupMenu()
 	Siroria.hideOutOfCombat()
