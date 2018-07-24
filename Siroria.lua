@@ -114,7 +114,12 @@ function Siroria.getStacks()
 		local _,_,timeEnding,_,stackCount,_,_,_,_,_,abilityID = GetUnitBuffInfo("player", i)
 		if Siroria.boonIDs[abilityID] then
 			SiroriaFrameStacks:SetText(stackCount)
-			SiroriaFrameStackTime:SetText(string.format("%.1f", Siroria.time(timeEnding)))
+			if ( Siroria.time(timeEnding) > Siroria.time(Siroria.downTime) ) then
+				SiroriaFrameStackTime:SetText("Move")
+			else
+				SiroriaFrameStackTime:SetText("Stay")
+			end
+			--SiroriaFrameStackTime:SetText(string.format("%.1f", Siroria.time(timeEnding)))
 			break
 		elseif i > numBuffs then
 			SiroriaFrameStacks:SetText("0")
